@@ -1,0 +1,27 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "Backend API for learning material",
+  "main": "app.js",
+  "scripts": {
+    "start": "NODE_ENV=production node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexanderHildreth/learner-api.git"
+  },
+  "author": "Alexander Hildreth",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexanderHildreth/learner-api/issues"
+  },
+  "homepage": "https://github.com/AlexanderHildreth/learner-api#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
