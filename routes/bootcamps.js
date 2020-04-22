@@ -7,26 +7,17 @@ const bootcampController = require('../controllers/bootcampController')
 // const vars
 const router    = express.Router()
 
-// Get
-router.get('/', bootcampController.getBootcamps)
+router.route('/')
+    .get(bootcampController.getBootcamps)
+    .post (bootcampController.createBootcamp)
 
-/*router.route('/:id')
-    .get(
-    ).put(
-    )
+router
+    .route("/:id")
+    .get(bootcampController.getBootcampById)
+    .put(bootcampController.updateBootcamp)
+    .delete(bootcampController.deleteBootcamp);
 
-router.get('/:name', (req, res) => {
-
-})
-
-// Create
-router.route('/create')
-    .post(
-    )
-
-// Remove
-router.route('/delete/:id')
-    .delete(
-    )*/
+// router
+    // .route('/:name')
 
 module.exports = router
