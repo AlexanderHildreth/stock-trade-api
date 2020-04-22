@@ -105,4 +105,5 @@ dist
 .tern-port
 
 # Custom ignores
-_data/
+_data/*
+!_data/bootcamps.json
