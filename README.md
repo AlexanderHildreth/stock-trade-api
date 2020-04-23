@@ -14,7 +14,7 @@ bootcamps/:id | PUT | Updates bootcamp with given ID and JSON obj
 bootcamps/:id | DELETE | Deletes bootcamp with given ID
 
 ## ENV Variables
-Create a file in the `/config` directtory and name it `config.env`
+Create a file in the `/config` directory and name it `config.env`
 ```
 MONGODB_URI= // uri to DB host for connection
 
