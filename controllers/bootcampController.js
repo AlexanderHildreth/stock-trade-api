@@ -12,7 +12,7 @@ exports.getBootcamps = asyncHandler(async(req, res, next) => {
     res.status(200)
         .json({
             success: true,
-            results: getBootcamps.length,
+            count: getBootcamps.length,
             data: {
                 getBootcamps
             }
@@ -30,7 +30,7 @@ exports.getBootcampById = asyncHandler(async (req, res, next) => {
     res.status(200).json({
         success: true,
         data: {
-        getBootcamp,
+            getBootcamp,
         },
     });
 })
