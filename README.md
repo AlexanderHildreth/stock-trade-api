@@ -40,6 +40,6 @@ GEOCODER_API_KEY= //API key for map provider
     npm run dev
     ``` 
 
-And you can start getting data from the server: [http://localhost:5000](http://localhost:5000)
+And you can start getting data from the server: [http://localhost:5000](http://localhost:5000). It's recommended to use Postman to test the API
 
 `PORT=5000` being the default value 
