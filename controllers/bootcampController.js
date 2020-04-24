@@ -8,7 +8,14 @@ const geocoder      = require('../utils/geocoder')
 // @route   GET /api/v1/bootcamps
 // @access  Public
 exports.getBootcamps = asyncHandler(async(req, res, next) => {
-    const getBootcamps = await Bootcamp.find();
+    let query
+    let queryStr = JSON.stringify(req.query)
+
+    queryStr            = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`) // finding mongoos query operaters in url params (gt|gte|lt|lte|in)
+    query               = await Bootcamp.find(JSON.parse(queryStr))
+    const getBootcamps  = query
+
+    if (!getBootcamps) return next(new ErrorResponse(`Bootcamps not found with param: ${req.query}`, 404));
 
     res.status(200)
         .json({
@@ -41,11 +48,10 @@ exports.getBootcampById = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.getBootcampByRadius = asyncHandler(async (req, res, next) => {
     const { zipcode, distance } = req.params
-    const location = await geocoder.geocode(zipcode)
-    const lat = location[0].latitude
-    const long = location[0].longitude
-    // Calculating radius - Earth Radius = 6378km
-    const radius = distance / 6378
+    const location              = await geocoder.geocode(zipcode)
+    const lat                   = location[0].latitude
+    const long                  = location[0].longitude
+    const radius                = distance / 6378 // Calculating radius - Earth Radius = 6378km
 
     const getBootcampByRadius = await Bootcamp.find({
         location: { 
