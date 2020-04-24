@@ -57,11 +57,6 @@ exports.getBootcampByRadius = asyncHandler(async (req, res, next) => {
         .json({
             success: true,
             count: getBootcampByRadius.length,
-            latitude: lat,
-            longitude: long,
-            distance: distance,
-            radius: radius,
-
             data: {
                 getBootcampByRadius
             }
