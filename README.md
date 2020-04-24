@@ -35,7 +35,7 @@ PORT= // Port for server to listen on, if not set defaults to 5000
 GEOCODER_PROVIDER= //gecoder map provider
 GEOCODER_API_KEY= //API key for map provider
 ```
-[node-gecoder providers](https://www.npmjs.com/package/node-geocoder#geocoder-providers-in-alphabetical-order)
+A list of all supported `node-gecoder` providers can be found here [here](https://www.npmjs.com/package/node-geocoder#geocoder-providers-in-alphabetical-order)
 ## Setup
 ### Local Enviroment
 *   ```
