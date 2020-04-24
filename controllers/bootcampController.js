@@ -1,10 +1,11 @@
 // Files
-const Bootcamp      = require('../models/Bootcamp')
 const asyncHandler  = require('../middlewares/async')
+const Bootcamp      = require('../models/Bootcamp')
 const ErrorResponse = require('../utils/errorResponse')
+const geocoder      = require('../utils/geocoder')
 
 // @desc    Get all bootcamps
-// @route   GET /api/va/bootcamps
+// @route   GET /api/v1/bootcamps
 // @access  Public
 exports.getBootcamps = asyncHandler(async(req, res, next) => {
     const getBootcamps = await Bootcamp.find();
@@ -20,7 +21,7 @@ exports.getBootcamps = asyncHandler(async(req, res, next) => {
 })
 
 // @desc    Get a bootcamps
-// @route   GET /api/va/bootcamps/:id
+// @route   GET /api/v1/bootcamps/:id
 // @access  Public
 exports.getBootcampById = asyncHandler(async (req, res, next) => {
     const getBootcamp = await Bootcamp.findById(req.params.id);
@@ -35,8 +36,40 @@ exports.getBootcampById = asyncHandler(async (req, res, next) => {
     });
 })
 
-// @desc    Create a bootcamps
-// @route   POST /api/va/bootcamps/
+// @desc    Get bootcamp(s) within a radius
+// @route   GET /api/v1/bootcamps/radius/:zipcode/:distance
+// @access  Private
+exports.getBootcampByRadius = asyncHandler(async (req, res, next) => {
+    const { zipcode, distance } = req.params
+    const location = await geocoder.geocode(zipcode)
+    const lat = location[0].latitude
+    const long = location[0].longitude
+    // Calculating radius - Earth Radius = 6378km
+    const radius = distance / 6378
+
+    const getBootcampByRadius = await Bootcamp.find({
+        location: { 
+            $geoWithin: { $centerSphere: [[long, lat], radius] }
+        }
+    })
+
+    res.status(200)
+        .json({
+            success: true,
+            count: getBootcampByRadius.length,
+            latitude: lat,
+            longitude: long,
+            distance: distance,
+            radius: radius,
+
+            data: {
+                getBootcampByRadius
+            }
+        })
+})
+
+// @desc    Create a bootcamp
+// @route   POST /api/v1/bootcamps/
 // @access  Private
 exports.createBootcamp = asyncHandler(async(req, res, next) => {
     const createBootcamp = await Bootcamp.create(req.body)
@@ -52,8 +85,8 @@ exports.createBootcamp = asyncHandler(async(req, res, next) => {
         })
 })
 
-// @desc    Update a bootcamps
-// @route   PUT /api/va/bootcamps/:id
+// @desc    Update a bootcamp
+// @route   PUT /api/v1/bootcamps/:id
 // @access  Private
 exports.updateBootcamp = asyncHandler(async(req, res, next) => {
     const updateBootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
@@ -71,8 +104,8 @@ exports.updateBootcamp = asyncHandler(async(req, res, next) => {
     });
 })
 
-// @desc    Delete a bootcamps
-// @route   DELETE /api/va/bootcamps/:id
+// @desc    Delete a bootcamp
+// @route   DELETE /api/v/bootcamps/:id
 // @access  Private
 exports.deleteBootcamp = asyncHandler(async(req, res, next) => {
     const deleteBootcamp = await Bootcamp.findByIdAndDelete(req.params.id)
