@@ -99,6 +99,9 @@ const bootcampSchema = new mongoose.Schema({
       type: Date,
       default: Date.now,
     }
+}, {
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
 // Create bootcamp slug
@@ -124,6 +127,20 @@ bootcampSchema.pre('save', async function(next) {
   // Don't save address
   this.address = undefined
   next()
+})
+
+// Cascade deletion of courses when bootcamp is deleted
+bootcampSchema.pre('remove', async function(next) {
+  await this.model('Course').deleteMany({ bootcamp: this._id })
+  next()
+})
+
+// Revers populate with virtuals
+bootcampSchema.virtual('courses', {
+  ref: 'Course',
+  localField: '_id',
+  foreignField: 'bootcamp',
+  justOne: false
 })
 
 module.exports = mongoose.model('Bootcamp', bootcampSchema)

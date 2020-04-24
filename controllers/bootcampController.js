@@ -16,7 +16,7 @@ exports.getBootcamps = asyncHandler(async(req, res, next) => {
     
     let queryStr        = JSON.stringify(reqQuery)
     queryStr            = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`) // finding mongoos query operaters in url params (gt|gte|lt|lte|in)
-    query               = Bootcamp.find(JSON.parse(queryStr))
+    query               = Bootcamp.find(JSON.parse(queryStr)).populate('courses')
     
     if(req.query.select) {
         const fields = req.query.select.split(',').join(' ')
@@ -37,9 +37,7 @@ exports.getBootcamps = asyncHandler(async(req, res, next) => {
     const total         = await Bootcamp.countDocuments()
     query               = query.skip(startIndex).limit(limit)
 
-    const getBootcamps = await query
-
-    if (!getBootcamps) return next(new ErrorResponse(`Bootcamps not found with param: ${req.query}`, 404));
+    const getBootcamps  = await query
 
     const pagination = {}
     if(endIndex < total){
@@ -145,10 +143,12 @@ exports.updateBootcamp = asyncHandler(async(req, res, next) => {
 // @route   DELETE /api/v/bootcamps/:id
 // @access  Private
 exports.deleteBootcamp = asyncHandler(async(req, res, next) => {
-    const deleteBootcamp = await Bootcamp.findByIdAndDelete(req.params.id)
+    const deleteBootcamp = await Bootcamp.findById(req.params.id)
 
     if (!deleteBootcamp) return next(new ErrorResponse(`Bootcamp not deleted`, 404));
 
+    deleteBootcamp.remove()
+    
     res.status(200).json({
       success: true,
       data: {}

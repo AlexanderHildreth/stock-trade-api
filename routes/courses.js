@@ -7,5 +7,9 @@ const router            = express.Router({ mergeParams: true })
 
 router.route('/')
     .get(courseController.getCourses)
+    .post(courseController.createCourse)
+
+router.route('/:id')
+    .get(courseController.getCourseById)
 
 module.exports = router
