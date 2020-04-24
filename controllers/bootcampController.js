@@ -97,9 +97,7 @@ exports.getBootcampByRadius = asyncHandler(async (req, res, next) => {
         .json({
             success: true,
             count: getBootcampByRadius.length,
-            data: {
-                getBootcampByRadius
-            }
+            data: getBootcampByRadius
         })
 })
 
@@ -114,9 +112,7 @@ exports.createBootcamp = asyncHandler(async(req, res, next) => {
     res.status(201)
         .json({
             success: true,
-            data: {
-                createBootcamp
-            }
+            data: createBootcamp
         })
 })
 
@@ -133,9 +129,7 @@ exports.updateBootcamp = asyncHandler(async(req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: {
-        updateBootcamp
-      },
+      data: updateBootcamp,
     });
 })
 
@@ -148,7 +142,7 @@ exports.deleteBootcamp = asyncHandler(async(req, res, next) => {
     if (!deleteBootcamp) return next(new ErrorResponse(`Bootcamp not deleted`, 404));
 
     deleteBootcamp.remove()
-    
+
     res.status(200).json({
       success: true,
       data: {}

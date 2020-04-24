@@ -11,5 +11,7 @@ router.route('/')
 
 router.route('/:id')
     .get(courseController.getCourseById)
+    .put(courseController.updateCourse)
+    .delete(courseController.deleteCourse)
 
 module.exports = router

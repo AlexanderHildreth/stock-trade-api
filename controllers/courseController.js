@@ -54,7 +54,7 @@ exports.createCourse = asyncHandler(async (req, res, next) => {
     req.body.bootcamp   = req.params.bootcampId
     const bootcamp      = await Bootcamp.findById(req.params.bootcampId)
 
-    if (!bootcamp) return next(new ErrorResponse(`Course not found with id: ${req.params.bootcampId}`, 404));
+    if (!bootcamp) return next(new ErrorResponse(`Bootcamp not found with id: ${req.params.bootcampId}`, 404));
 
     const createCourse = Course.create(req.body)
     if (!createCourse) return next(new ErrorResponse(`Course not created`, 404));
@@ -63,5 +63,42 @@ exports.createCourse = asyncHandler(async (req, res, next) => {
         .json({
             success: true,
             data: createCourse
+        })
+})
+
+// @desc    Update a course
+// @route   Put /api/v1/courses/:id
+// @access  Private
+exports.updateCourse = asyncHandler(async (req, res, next) => {
+    let updateCourse = await Course.findById(req.params.id)
+
+    if (!updateCourse) return next(new ErrorResponse(`Course not found with id: ${req.params.id}`, 404));
+
+    course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    })
+
+    res.status(200)
+        .json({
+            success: true,
+            data: updateCourse
+        })
+})
+
+// @desc    Delete a course
+// @route   DELETE /api/v1/courses/:id
+// @access  Private
+exports.deleteCourse = asyncHandler(async (req, res, next) => {
+    const deleteCourse = await Course.findById(req.params.id)
+
+    if (!deleteCourse) return next(new ErrorResponse(`Course not found with id: ${req.params.id}`, 404));
+
+    await deleteCourse.remove()
+
+    res.status(200)
+        .json({
+            success: true,
+            data: {}
         })
 })
