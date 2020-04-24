@@ -10,8 +10,19 @@ Route | Request | Expected Response
 bootcamps/ | GET | JSON obj with all bootcamps
 bootcamps/ | POST | Creates a bootcamp with given JSON obj
 bootcamps/:id | GET | JSON obj with a bootcamp
+bootcamps/:id/courses | GET | JSON obj with all courses in bootcamp
 bootcamps/:id | PUT | Updates bootcamp with given ID and JSON obj
 bootcamps/:id | DELETE | Deletes bootcamp with given ID
+
+### Courses endpoints
+Route | Request | Expected Response
+------|:----:|------------------ 
+courses/ | GET | JSON obj with all courses
+courses/ | POST | Creates a course with given JSON obj
+courses/:id | GET | JSON obj with a course
+courses/:bootcampId/courses | GET | JSON obj with all courses in bootcamp
+courses/:id | PUT | Updates course with given ID and JSON obj
+courses/:id | DELETE | Deletes course with given ID
 
 ## ENV Variables
 Create a file in the `/config` directory and name it `config.env`
