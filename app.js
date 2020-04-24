@@ -9,6 +9,7 @@ dotenv.config({ path: './config/config.env' })
 const connectDB     = require('./config/db')
 const errorHandler  = require('./middlewares/error')
 const bootcamps     = require('./routes/bootcamps')
+const courses       = require('./routes/courses')
 
 // const vars
 const app = express()
@@ -23,6 +24,7 @@ if(process.env.NODE_ENV ==='development') {
 
 // routes
 app.use('/api/v1/bootcamps', bootcamps)
+app.use('/api/v1/courses', courses)
 
 // Routes middlewares
 app.use(errorHandler)
