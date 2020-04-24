@@ -10,7 +10,7 @@ const geocoder      = require('../utils/geocoder')
 exports.getBootcamps = asyncHandler(async(req, res, next) => {
     let query
     const reqQuery      = { ...req.query }
-    const removeFields  = ['select', 'sort']
+    const removeFields  = ['select', 'sort', 'limit', 'page']
 
     removeFields.forEach(params => delete reqQuery[params])
     
@@ -30,17 +30,38 @@ exports.getBootcamps = asyncHandler(async(req, res, next) => {
         query = query.sort('-createdAt')
     }
 
+    const page          = parseInt(req.query.page, 10) || 1
+    const limit         = parseInt(req.query.limit, 10) || 15
+    const startIndex    = (page - 1) * limit
+    const endIndex      = page  * limit
+    const total         = await Bootcamp.countDocuments()
+    query               = query.skip(startIndex).limit(limit)
+
     const getBootcamps = await query
 
     if (!getBootcamps) return next(new ErrorResponse(`Bootcamps not found with param: ${req.query}`, 404));
+
+    const pagination = {}
+    if(endIndex < total){
+        pagination.next = {
+            page: page + 1,
+            limit
+        }
+    }
+    
+    if(startIndex > 0){
+        pagination.previous = {
+            page: page - 1,
+            limit
+        }
+    }
 
     res.status(200)
         .json({
             success: true,
             count: getBootcamps.length,
-            data: {
-                getBootcamps
-            }
+            pagination,
+            data: getBootcamps
         })
 })
 
@@ -54,9 +75,7 @@ exports.getBootcampById = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        data: {
-            getBootcamp,
-        },
+        data: getBootcamp,
     });
 })
 
