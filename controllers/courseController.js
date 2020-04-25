@@ -56,10 +56,11 @@ exports.createCourse = asyncHandler(async (req, res, next) => {
 
     if (!bootcamp) return next(new ErrorResponse(`Bootcamp not found with id: ${req.params.bootcampId}`, 404));
 
-    const createCourse = Course.create(req.body)
+    const createCourse = await Course.create(req.body)
+
     if (!createCourse) return next(new ErrorResponse(`Course not created`, 404));
 
-    res.status(200)
+    res.status(201)
         .json({
             success: true,
             data: createCourse
