@@ -107,3 +107,4 @@ dist
 # Custom ignores
 _data/*
 !_data/bootcamps.json
+!_data/courses.json
