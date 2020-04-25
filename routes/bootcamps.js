@@ -24,4 +24,8 @@ router
     .route('/radius/:zipcode/:distance')
     .get(bootcampController.getBootcampByRadius)
 
+router
+    .route('/:id/photo')
+    .put(bootcampController.bootcampFileUpload)
+
 module.exports = router
