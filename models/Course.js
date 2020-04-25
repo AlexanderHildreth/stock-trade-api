@@ -50,21 +50,21 @@ CourseSchema.statics.getAverageCost = async function(bootcampId){
             }
         }
     ])
-    
+
     try {
         await this.model('Bootcamp').findByIdAndUpdate(bootcampId, {
-            averageCost: Math.ceil(obj[0].averageCost / 10) * 10
+            averageCost: obj.length > 0 ? Math.ceil(obj[0].averageCost) : 0
         })
     } catch (error) {
         console.error(error)
     }
 }
 
-CourseSchema.post('save', function() {
-    this.constructor.getAverageCost(this.bootcamp)
+CourseSchema.post('save', async function() {
+    await this.constructor.getAverageCost(this.bootcamp)
 })
 
-CourseSchema.pre('remove', function() {
+CourseSchema.post('remove', async function() {
     this.constructor.getAverageCost(this.bootcamp)
 })
 
