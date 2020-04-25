@@ -10,6 +10,7 @@ Route | Request | Expected Response
 bootcamps/ | GET | JSON obj with all bootcamps
 bootcamps/ | POST | Creates a bootcamp with given JSON obj
 bootcamps/:id | GET | JSON obj with a bootcamp
+bootcamps/radius/:zipcode/:distance | GET | JSON obj with bootcamp(s) within given distance of zipcode
 bootcamps/:id/courses | GET | JSON obj with all courses in bootcamp
 bootcamps/:id | PUT | Updates bootcamp with given ID and JSON obj
 bootcamps/:id | DELETE | Deletes bootcamp with given ID
