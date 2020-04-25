@@ -19,7 +19,7 @@ bootcamps/:id | DELETE | Deletes bootcamp with given ID
 Route | Request | Expected Response
 ------|:----:|------------------ 
 courses/ | GET | JSON obj with all courses
-courses/ | POST | Creates a course with given JSON obj
+bootcamp/:bootcampId/courses/ | POST | Creates a course with given JSON obj
 courses/:id | GET | JSON obj with a course
 courses/:bootcampId/courses | GET | JSON obj with all courses in bootcamp
 courses/:id | PUT | Updates course with given ID and JSON obj
