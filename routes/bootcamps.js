@@ -20,6 +20,7 @@ router.route('/')
     )
     .post(
         auth.protect,
+        auth.authorise('publisher', 'admin'),
         bootcampController.createBootcamp
     )
 
@@ -28,10 +29,12 @@ router
     .get(bootcampController.getBootcampById)
     .put(
         auth.protect,
+        auth.authorise('publisher', 'admin'),
         bootcampController.updateBootcamp
     )
     .delete(
         auth.protect,
+        auth.authorise('publisher', 'admin'),
         bootcampController.deleteBootcamp
     )
 
@@ -43,6 +46,7 @@ router
     .route('/:id/photo')
     .put(
         auth.protect,
+        auth.authorise('publisher', 'admin'),
         bootcampController.bootcampFileUpload
     )
 
