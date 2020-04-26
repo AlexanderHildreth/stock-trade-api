@@ -41,6 +41,20 @@ exports.loginUser = asyncHandler(async(req, res, next) => {
     sendTokenResponse(loginUser, 200, res)
 })
 
+// @desc    Get current logged in user
+// @route   POST /api/v1/auth/currentUser
+// @access  Private
+
+exports.currentUser = asyncHandler(async(req, res, next) => {
+    const currentUser = await User.findById(req.user.id)
+
+    res.status(200)
+        .json({
+            success: true,
+            data: currentUser
+        })
+})
+
 const sendTokenResponse = (user, statusCode, res) => {
     const token     = user.getSignedJwttoken()
     const options   = {

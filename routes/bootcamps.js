@@ -1,6 +1,7 @@
 // Modules
 const express               = require('express')
 // files
+const auth                  = require('../middlewares/auth')
 const Bootcamp              = require('../models/Bootcamp')
 const bootcampController    = require('../controllers/bootcampController')
 const customResults         = require('../middlewares/customResults')
@@ -17,13 +18,22 @@ router.route('/')
         customResults(Bootcamp, 'courses'),
         bootcampController.getBootcamps
     )
-    .post (bootcampController.createBootcamp)
+    .post(
+        auth.protect,
+        bootcampController.createBootcamp
+    )
 
 router
     .route("/:id")
     .get(bootcampController.getBootcampById)
-    .put(bootcampController.updateBootcamp)
-    .delete(bootcampController.deleteBootcamp);
+    .put(
+        auth.protect,
+        bootcampController.updateBootcamp
+    )
+    .delete(
+        auth.protect,
+        bootcampController.deleteBootcamp
+    )
 
 router
     .route('/radius/:zipcode/:distance')
@@ -31,6 +41,9 @@ router
 
 router
     .route('/:id/photo')
-    .put(bootcampController.bootcampFileUpload)
+    .put(
+        auth.protect,
+        bootcampController.bootcampFileUpload
+    )
 
 module.exports = router
