@@ -1,14 +1,22 @@
 // Modules
-const express   = require('express')
-
+const express               = require('express')
 // files
-const bootcampController = require('../controllers/bootcampController')
-
+const Bootcamp              = require('../models/Bootcamp')
+const bootcampController    = require('../controllers/bootcampController')
+const customResults         = require('../middlewares/customResults')
+// Include other resource routers
+const courseRouter          = require('./courses')
 // const vars
-const router    = express.Router()
+const router                = express.Router()
+
+// re-reouting
+router.use('/:bootcampId/courses', courseRouter)
 
 router.route('/')
-    .get(bootcampController.getBootcamps)
+    .get(
+        customResults(Bootcamp, 'courses'),
+        bootcampController.getBootcamps
+    )
     .post (bootcampController.createBootcamp)
 
 router
@@ -20,5 +28,9 @@ router
 router
     .route('/radius/:zipcode/:distance')
     .get(bootcampController.getBootcampByRadius)
+
+router
+    .route('/:id/photo')
+    .put(bootcampController.bootcampFileUpload)
 
 module.exports = router
