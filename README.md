@@ -26,6 +26,14 @@ courses/:bootcampId/courses | GET | JSON obj with all courses in bootcamp
 courses/:id | PUT | Updates course with given ID and JSON obj
 courses/:id | DELETE | Deletes course with given ID
 
+### Search params
+param | result | Eg.
+------|--------|----
+select | Returns JSON obj with selected fields | `?select=name,description`
+sort | Returns JSON obj with sorted data | `?sort=-name` (desc, for asc replace `-` with `+`)
+limit | Returns limited results in JSON obj | `?limit=5`
+page | returns page | `?page=2`
+
 ## ENV Variables
 Create a file in the `/config` directory and name it `config.env`
 ```
