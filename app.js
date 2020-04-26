@@ -1,30 +1,34 @@
 // Modules
-const dotenv        = require('dotenv')
-const colours       = require('colors')
-const express       = require('express')
-const fileUpload    = require('express-fileupload')
-const morgan        = require('morgan')
-const path          = require('path')
+const dotenv            = require('dotenv')
+const cookieParser      = require('cookie-parser')
+const colours           = require('colors')
+const express           = require('express')
+const fileUpload        = require('express-fileupload')
+const fs                = require('fs')
+const morgan            = require('morgan')
+const path              = require('path')
 // loading files
 dotenv.config({ path: './config/config.env' })
-const connectDB     = require('./config/db')
-const errorHandler  = require('./middlewares/error')
-const bootcamps     = require('./routes/bootcamps')
-const courses       = require('./routes/courses')
+const connectDB         = require('./config/db')
+const errorHandler      = require('./middlewares/error')
+const auths             = require('./routes/auths')
+const bootcamps         = require('./routes/bootcamps')
+const courses           = require('./routes/courses')
 // const vars
-const app = express()
-const PORT = process.env.PORT || 5000
+const app               = express()
+const PORT              = process.env.PORT || 5000
+const accessLogStream   = fs.createWriteStream(path.join(__dirname, '/var/logs/access.log'), { flags: 'a' })
 
 // App middlewares
 app.use(express.json())
+app.use(cookieParser())
 connectDB()
-if(process.env.NODE_ENV ==='development') {
-    app.use(morgan('dev'))
-} 
+process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : //app.use(morgan('combined', { stream: accessLogStream }))
 app.use(fileUpload())
 app.use(express.static(path.join(__dirname, 'public')))
 
 // routes
+app.use('/api/v1/auth', auths)
 app.use('/api/v1/bootcamps', bootcamps)
 app.use('/api/v1/courses', courses)
 

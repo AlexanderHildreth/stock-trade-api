@@ -1,6 +1,7 @@
 // Modules
 const express           = require('express')
 // files
+const auth              = require('../middlewares/auth')
 const Course            = require('../models/Course')
 const courseController  = require('../controllers/courseController')
 const customResults     = require('../middlewares/customResults')
@@ -12,11 +13,23 @@ router.route('/')
         customResults(Course, { path: 'bootcamp', select: 'name description' }),
         courseController.getCourses
         )
-    .post(courseController.createCourse)
+    .post(
+        auth.protect,
+        auth.authorise('publisher', 'user'),
+        courseController.createCourse
+    )
 
 router.route('/:id')
     .get(courseController.getCourseById)
-    .put(courseController.updateCourse)
-    .delete(courseController.deleteCourse)
+    .put(
+        auth.protect,
+        auth.authorise('publisher', 'user'),
+        courseController.updateCourse
+    )
+    .delete(
+        auth.protect,
+        auth.authorise('publisher', 'user'),
+        courseController.deleteCourse
+    )
 
 module.exports = router
