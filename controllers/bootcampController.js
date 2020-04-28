@@ -30,7 +30,7 @@ exports.getBootcampById = asyncHandler(async (req, res, next) => {
 
 // @desc    Get bootcamp(s) within a radius
 // @route   GET /api/v1/bootcamps/radius/:zipcode/:distance
-// @access  Private
+// @access  Public
 exports.getBootcampByRadius = asyncHandler(async (req, res, next) => {
     const { zipcode, distance } = req.params
     const location              = await geocoder.geocode(zipcode)
@@ -56,9 +56,14 @@ exports.getBootcampByRadius = asyncHandler(async (req, res, next) => {
 // @route   POST /api/v1/bootcamps/
 // @access  Private
 exports.createBootcamp = asyncHandler(async(req, res, next) => {
-    const createBootcamp = await Bootcamp.create(req.body)
+    req.body.user           = req.user.id
+    const publishedBootcamp = await Bootcamp.findOne({ user: req.user.id })
+    
+    if(publishedBootcamp && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`Logged in user has already published a bootcamp, no more allowed with current role`, 400))
+    }
 
-    if (!createBootcamp) return next(new ErrorResponse(`Bootcamp not created`, 404));
+    const createBootcamp = await Bootcamp.create(req.body)
 
     res.status(201)
         .json({
@@ -71,12 +76,21 @@ exports.createBootcamp = asyncHandler(async(req, res, next) => {
 // @route   PUT /api/v1/bootcamps/:id
 // @access  Private
 exports.updateBootcamp = asyncHandler(async(req, res, next) => {
-    const updateBootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
+    let updateBootcamp = await Bootcamp.findById(req.params.id, req.body, {
         new: true,
         runValidators: true
     })
 
-    if (!updateBootcamp) return next(new ErrorResponse(`Bootcamp not updated`, 404));
+    if (!updateBootcamp) {
+        return next(new ErrorResponse(`Bootcamp not updated`, 404));
+    } else if(updateBootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User not authorised to update this bootcamp`, 401));
+    }
+
+    updateBootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    })
 
     res.status(200).json({
       success: true,
@@ -90,7 +104,11 @@ exports.updateBootcamp = asyncHandler(async(req, res, next) => {
 exports.deleteBootcamp = asyncHandler(async(req, res, next) => {
     const deleteBootcamp = await Bootcamp.findById(req.params.id)
 
-    if (!deleteBootcamp) return next(new ErrorResponse(`Bootcamp not deleted`, 404));
+    if (!deleteBootcamp) {
+        return next(new ErrorResponse(`Bootcamp not deleted`, 404));
+    } else if (deleteBootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User not authorised to update this bootcamp`, 401));
+    }
 
     deleteBootcamp.remove()
 
@@ -110,6 +128,8 @@ exports.bootcampFileUpload = asyncHandler(async(req, res, next) => {
         return next(new ErrorResponse(`Bootcamp not found with id: ${req.params.id}`, 404));
     } else if(!req.files) {
         return next(new ErrorResponse(`Please upload a file`, 400));
+    } else if (bootcampFileUpload.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User not authorised to update this bootcamp`, 401));
     }
 
     const file = req.files.file

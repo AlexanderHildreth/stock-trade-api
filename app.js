@@ -14,6 +14,7 @@ const errorHandler      = require('./middlewares/error')
 const auths             = require('./routes/auths')
 const bootcamps         = require('./routes/bootcamps')
 const courses           = require('./routes/courses')
+const users             = require('./routes/users')
 // const vars
 const app               = express()
 const PORT              = process.env.PORT || 5000
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/api/v1/auth', auths)
 app.use('/api/v1/bootcamps', bootcamps)
 app.use('/api/v1/courses', courses)
+app.use('/api/v1/users', users)
 
 // Routes middlewares
 app.use(errorHandler)
