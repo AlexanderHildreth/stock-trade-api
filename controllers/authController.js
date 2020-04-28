@@ -1,6 +1,9 @@
+// Modules
+const crypto        = require('crypto')  
 // Files
 const asyncHandler  = require('../middlewares/async')
 const ErrorResponse = require('../utils/errorResponse')
+const sendEmail     = require('../utils/sendEmail')
 const User          = require('../models/User')
 
 // @desc    Register user
@@ -44,7 +47,6 @@ exports.loginUser = asyncHandler(async(req, res, next) => {
 // @desc    Get current logged in user
 // @route   POST /api/v1/auth/currentUser
 // @access  Private
-
 exports.currentUser = asyncHandler(async(req, res, next) => {
     const currentUser = await User.findById(req.user.id)
 
@@ -53,6 +55,68 @@ exports.currentUser = asyncHandler(async(req, res, next) => {
             success: true,
             data: currentUser
         })
+})
+
+// @desc    Reset password
+// @route   PUT /api/v1/auth/resetpassword/:resetToken
+// @access  Public
+exports.resetPassword = asyncHandler(async(req, res, next) => {
+    const resetPasswordToken    = crypto
+        .createHash('sha256')
+        .update(req.params.resetToken)
+        .digest('hex')
+    
+    const user = await User.findOne({
+        resetPasswordToken,
+        resetPasswordExpire: { $gt: Date.now() } 
+    })
+
+    if(!user) return next(new ErrorResponse('Invalid token', 400))
+
+    user.password               = req.body.password
+    user.resetPasswordToken     = undefined
+    user.resetPasswordExpire    = undefined
+
+    await user.save()
+    sendTokenResponse(user, 200, res)
+})
+
+// @desc    Forgot password
+// @route   POST /api/v1/auth/forgotpassword
+// @access  Public
+exports.forgotPassword = asyncHandler(async(req, res, next) => {
+    const user = await User.findOne({ email: req.body.email })
+
+    if (!user) return next(new ErrorResponse(`User with email: ${req.body.email} not found`, 404))
+
+    const resetToken = user.getResetPasswordToken()
+
+    await user.save({ validateBeforeSave: false })
+
+    const resetUrl  = `${req.protocol}://${req.get('host')}/api/${process.env.API_V}/auth/resetpassword/${resetToken}`
+    const message   = `You are recieving this email because you have request a password reset. Please make a PUT request to: \n\n${resetUrl}`
+    // const message   = `You are recieving this email because you have request a password reset. Please make a PUT request to: \n\n<a href="${resetUrl}">Reset Password</a>`
+
+    try {
+        await sendEmail({
+            email: user.email,
+            subject: 'Password Reset Token',
+            message
+        })
+        
+        res.status(200)
+            .json({
+                success: true
+            })
+    } catch (error) {
+        console.error(error)
+
+        user.ResetPasswordToken     = undefined
+        user.ResetPasswordExpire    = undefined
+
+        await user.save({ validateBeforeSave: false })
+        return next(new ErrorResponse(`Email could not be sent`, 500))
+    }
 })
 
 const sendTokenResponse = (user, statusCode, res) => {

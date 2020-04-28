@@ -12,6 +12,12 @@ router.route('/register')
 router.route('/login')
     .post(authController.loginUser)
 
+router.route('/forgotpassword')
+    .post(authController.forgotPassword)
+
+router.route('/resetpassword/:resetToken')
+    .put(authController.resetPassword)
+
 router.route('/currentUser')
     .get(
         auth.protect,
