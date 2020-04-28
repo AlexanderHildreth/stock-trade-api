@@ -30,7 +30,7 @@ exports.getBootcampById = asyncHandler(async (req, res, next) => {
 
 // @desc    Get bootcamp(s) within a radius
 // @route   GET /api/v1/bootcamps/radius/:zipcode/:distance
-// @access  Private
+// @access  Public
 exports.getBootcampByRadius = asyncHandler(async (req, res, next) => {
     const { zipcode, distance } = req.params
     const location              = await geocoder.geocode(zipcode)
