@@ -24,4 +24,16 @@ router.route('/currentUser')
         authController.currentUser
     )
 
+router.route('/updateuser')
+    .put(
+        auth.protect,
+        authController.updateUser
+    )
+
+router.route('/updatepassword')
+    .put(
+        auth.protect,
+        authController.updatePassword
+    )
+
 module.exports = router;
