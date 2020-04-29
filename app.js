@@ -8,7 +8,6 @@ const expressRateLimit  = require('express-rate-limit')
 const fileUpload        = require('express-fileupload')
 const helmet            = require('helmet')
 const hpp               = require('hpp')
-const fs                = require('fs')
 const morgan            = require('morgan')
 const mongoSanitize     = require('express-mongo-sanitize')
 const path              = require('path')
@@ -30,10 +29,9 @@ const limiter           = expressRateLimit({
     max: 100
 })
 const port              = process.env.PORT || 5000
-const accessLogStream   = fs.createWriteStream(path.join(__dirname, '/var/logs/access.log'), { flags: 'a' })
 
 // App middlewares
-process.env.NODE_ENV === 'development' ? app.use(morganLogging) : app.use(morgan('combined', { stream: accessLogStream }))
+process.env.NODE_ENV === 'development' ? app.use(morganLogging) : app.use(morgan('combined'))
 connectDB()
 app.use(cookieParser())
 app.use(cors())
