@@ -60,13 +60,13 @@ And you can start getting data from the server: [http://localhost:5000](http://l
 
 
 ## Endpoints
-Endpoint documentation will be found at the index of [http://localhost:5000](http://localhost:5000) or whatever your host is of your dev enviroment
+Endpoint documentation will be found at the index of of your host, for eg: `<protocol>://<host>`
 
-Current API version is `v1`, and can be changed in the `config.env` iff need be. There are some code snippets that use the env var of the API version, so make sure it's up to dat 
+Current API version is `v1`, and can be changed in the `config.env` if need be. There are some code snippets that use the `API_V` ENV var, so make sure it's up to date
 
 The base endpoint is: `/api/v1/`
 
-So exampl URL would be: `<protocol>://<host>/api/v1/<endpoint>`
+So example URL would be: `<protocol>://<host>/api/v1/<endpoint>`
 
 ### Search params
 param | result | Eg.
