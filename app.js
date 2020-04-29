@@ -5,8 +5,8 @@ const colours           = require('colors')
 const express           = require('express')
 const fileUpload        = require('express-fileupload')
 const helmet            = require('helmet')
-// const fs                = require('fs')
-// const morgan            = require('morgan')
+const fs                = require('fs')
+const morgan            = require('morgan')
 const mongoSanitize     = require('express-mongo-sanitize')
 const path              = require('path')
 const xssClean          = require('xss-clean')
@@ -23,7 +23,7 @@ const users             = require('./routes/users')
 // const vars
 const app               = express()
 const PORT              = process.env.PORT || 5000
-// const accessLogStream   = fs.createWriteStream(path.join(__dirname, '/var/logs/access.log'), { flags: 'a' })
+const accessLogStream   = fs.createWriteStream(path.join(__dirname, '/var/logs/access.log'), { flags: 'a' })
 
 // App middlewares
 app.use(express.json())
@@ -32,7 +32,7 @@ connectDB()
 app.use(mongoSanitize())
 app.use(helmet())
 app.use(xssClean())
-process.env.NODE_ENV === 'development' ? app.use(morganLogging) : //app.use(morgan('combined', { stream: accessLogStream }))
+process.env.NODE_ENV === 'development' ? app.use(morganLogging) : app.use(morgan('combined', { stream: accessLogStream }))
 app.use(fileUpload())
 app.use(express.static(path.join(__dirname, 'public')))
 
