@@ -2,7 +2,9 @@
 A NodeJS backend API that collects and returns a JSON object when called containing bootcamps and courses. It uses `node-geocoder` to display a map with available courses, or courses within a given radius.
 
 ## ENV Variables
-Create a file in the `/config` directory and name it `config.env`
+Rename `config.env.env` file found in the `/config` directory to `config.env`.
+
+Below are he necessary vars
 ```
 # DB ENV VARS
 MONGODB_URI= # URI to DB host for connection
@@ -31,7 +33,7 @@ GEOCODER_API_KEY= # AAPI key for map provider
 ```
 A list of all supported `node-gecoder` providers can be found here [here](https://www.npmjs.com/package/node-geocoder#geocoder-providers-in-alphabetical-order)
 ## Setup
-### Local Enviroment
+### Development Enviroment
 *   ```
     npm install 
     ```
@@ -44,53 +46,27 @@ A list of all supported `node-gecoder` providers can be found here [here](https:
 *   ```
     npm run dev
     ``` 
-
 And you can start getting data from the server: [http://localhost:5000](http://localhost:5000). It's recommended to use Postman to test the API
 
 `PORT=5000` being the default value 
 
+### Production Enviroment
+*   ```
+    npm install 
+    ```
+*   ```
+    npm start
+    ``` 
+
+
 ## Endpoints
-Current API version is `v1` and the base endpoint is: `/api/v1/`
+Endpoint documentation will be found at the index of [http://localhost:5000](http://localhost:5000) or whatever your host is of your dev enviroment
 
-### Bootcamps endpoints
-Route | Request | Access | Expected Response
-------|---------|--------|------------------- 
-bootcamps/ | GET | Public | JSON obj with all bootcamps
-bootcamps/ | POST | Private | Creates a bootcamp with given JSON obj
-bootcamps/radius/:zipcode/:distance | GET | Public | JSON obj with bootcamp(s) within given distance of zipcode
-bootcamps/:id | GET | Public | JSON obj with a bootcamp
-<!-- bootcamps/:id/courses | GET | Public | JSON obj with all courses in bootcamp -->
-bootcamps/:id | PUT | Private | Updates bootcamp with given ID and JSON obj
-bootcamps/:id | DELETE | Private | Deletes bootcamp with given ID
-bootcamps/:id/photo | PUT | Private | Uploads a photo for specific bootcamp
+Current API version is `v1`, and can be changed in the `config.env` iff need be. There are some code snippets that use the env var of the API version, so make sure it's up to dat 
 
-### Courses endpoints
-Route | Request | Access | Expected Response
-------|---------|--------|------------------- 
-<!-- courses/ | GET | Public | JSON obj with all courses -->
-bootcamp/:bootcampId/courses | GET | Public | JSON obj with all courses in bootcamp
-bootcamp/:bootcampId/courses | POST | Private | Creates a course with given JSON obj
-courses/:id | GET | Public | JSON obj with a course
-courses/:id | PUT | Private | Updates course with given ID and JSON obj
-courses/:id | DELETE | Private | Deletes course with given ID
+The base endpoint is: `/api/v1/`
 
-### User endpoints
-Route | Request | Access | Expected Response
-------|---------|--------|------------------- 
-users/ | GET | Private | JSON obj with all users
-users/:id | GET | Private | JSON obj with a user
-users/:id | PUT | Private | Updates user with given ID and JSON obj
-users/:id | DELETE | Private | Deletes user with given ID
-
-### Auth endpoints
-Route | Request | Access | Expected Response
-------|---------|--------|------------------- 
-auth/currentUser | GET | Private | JSON obj with current logged in user
-auth/register | POST | Public | Register a user with given JSON obj
-auth/login | POST | Public | Login a user with given JSON obj
-auth/updatepassword | PUT | Private | JSON obj to update password of current user
-auth/resetpassword/:resetToken | PUT | Public | Reset password callback link
-auth/forgotpassword | POST | PUBLIC | Forgot password link to reset password
+So exampl URL would be: `<protocol>://<host>/api/v1/<endpoint>`
 
 ### Search params
 param | result | Eg.
@@ -99,3 +75,6 @@ select | Returns JSON obj with selected fields | `?select=name,description`
 sort | Returns JSON obj with sorted data | `?sort=-name` (desc, for asc replace `-` with `+`)
 limit | Returns limited results in JSON obj | `?limit=5`
 page | returns page | `?page=2`
+
+### Version 1.0.0
+### License: MIT
