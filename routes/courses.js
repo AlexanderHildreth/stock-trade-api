@@ -18,7 +18,7 @@ router.route('/')
         )
     .post(
         auth.protect,
-        auth.authorise('publisher', 'user'),
+        auth.authorise('publisher', 'admin'),
         courseController.createCourse
     )
 
@@ -26,12 +26,12 @@ router.route('/:id')
     .get(courseController.getCourseById)
     .put(
         auth.protect,
-        auth.authorise('publisher', 'user'),
+        auth.authorise('publisher', 'admin'),
         courseController.updateCourse
     )
     .delete(
         auth.protect,
-        auth.authorise('publisher', 'user'),
+        auth.authorise('publisher', 'admin'),
         courseController.deleteCourse
     )
 
