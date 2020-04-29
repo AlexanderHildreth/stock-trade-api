@@ -50,10 +50,6 @@ exports.createReview = asyncHandler(async (req, res, next) => {
 
     if (!bootcamp) return next(new ErrorResponse(`Bootcamp not found with id: ${req.params.bootcampId}`, 404));
 
-    if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
-        return next(new ErrorResponse(`User not authorised to add review to this bootcamp`, 401));
-    }
-
     const createReview = await Review.create(req.body)
     if (!createReview) {
         return next(new ErrorResponse(`Review not created`, 404));
@@ -67,8 +63,8 @@ exports.createReview = asyncHandler(async (req, res, next) => {
         })
 })
 
-// @desc    Update a reviews
-// @route   Put /api/v1/reviewss/:id
+// @desc    Update a review
+// @route   Put /api/v1/reviews/:id
 // @access  Private
 exports.updateReview = asyncHandler(async (req, res, next) => {
     let updateReview = await Review.findById(req.params.id)
@@ -84,6 +80,8 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
         runValidators: true
     })
 
+    await review.save()
+
     res.status(200)
         .json({
             success: true,
@@ -91,19 +89,19 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
         })
 })
 
-// @desc    Delete a course
-// @route   DELETE /api/v1/courses/:id
+// @desc    Delete a review
+// @route   DELETE /api/v1/reviews/:id
 // @access  Private
-exports.deleteCourse = asyncHandler(async (req, res, next) => {
-    const deleteCourse = await Course.findById(req.params.id)
+exports.deleteReview = asyncHandler(async (req, res, next) => {
+    const deleteReview = await Review.findById(req.params.id)
 
-    if (!deleteCourse) return next(new ErrorResponse(`Course not found with id: ${req.params.id}`, 404));
+    if (!deleteReview) return next(new ErrorResponse(`Review not found with id: ${req.params.id}`, 404));
 
-    if (deleteCourse.user.toString() !== req.user.id && req.user.role !== 'admin') {
-        return next(new ErrorResponse(`User not authorised to delete this course`, 401));
+    if (deleteReview.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User not authorised to delete this review`, 401));
     }
 
-    await deleteCourse.remove()
+    await deleteReview.remove()
 
     res.status(200)
         .json({

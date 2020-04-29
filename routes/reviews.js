@@ -16,8 +16,23 @@ router.route('/')
         }),
         reviewController.getReviews
     )
+    .post(
+        auth.protect,
+        auth.authorise('admin', 'user'),
+        reviewController.createReview
+    )
 
 router.route('/:id')
     .get(reviewController.getReviewById)
+    .put(
+        auth.protect,
+        auth.authorise('user', 'admin'),
+        reviewController.updateReview
+    )
+    .delete(
+        auth.protect,
+        auth.authorise('user', 'admin'),
+        reviewController.deleteReview
+    )
 
 module.exports = router
