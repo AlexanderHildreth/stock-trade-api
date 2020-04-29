@@ -20,7 +20,7 @@ const users             = require('./routes/users')
 // const vars
 const app               = express()
 const PORT              = process.env.PORT || 5000
-const accessLogStream   = fs.createWriteStream(path.join(__dirname, '/var/logs/access.log'), { flags: 'a' })
+// const accessLogStream   = fs.createWriteStream(path.join(__dirname, '/var/logs/access.log'), { flags: 'a' })
 
 // App middlewares
 app.use(express.json())
