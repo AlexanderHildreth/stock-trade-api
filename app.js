@@ -28,7 +28,7 @@ const limiter           = expressRateLimit({
     windowMs: 10 * 60 * 1000, // !0 minutes
     max: 100
 })
-const port              = process.env.PORT || 5000
+// const port              = process.env.PORT || 5000
 
 // App middlewares
 process.env.NODE_ENV === 'development' ? app.use(morganLogging) : app.use(morgan('combined'))
@@ -54,7 +54,7 @@ app.use('/api/v1/users', users)
 // Routes middlewares
 app.use(errorHandler)
 
-const server = app.listen(port, () => {
+/*const server = app.listen(port, () => {
     console.log(`[app] Server running in ${process.env.NODE_ENV} mode on port ${port}`.yellow.underline.bold)
 })
 
@@ -63,6 +63,6 @@ process.on('unhandledRejection', (err, promise) => {
     console.log(`ERROR: ${err.message}`.red)
 
     server.close(() => process.exit(1))
-})
+})*/
 
-module.exports = server
+module.exports = app
