@@ -7,11 +7,13 @@ const bootcampController    = require('../controllers/bootcampController')
 const customResults         = require('../middlewares/customResults')
 // Include other resource routers
 const courseRouter          = require('./courses')
+const reviewRouter          = require('./reviews')
 // const vars
 const router                = express.Router()
 
 // re-reouting
 router.use('/:bootcampId/courses', courseRouter)
+router.use('/:bootcampId/reviews', reviewRouter)
 
 router.route('/')
     .get(

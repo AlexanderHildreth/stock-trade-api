@@ -10,7 +10,10 @@ const router            = express.Router({ mergeParams: true })
 
 router.route('/')
     .get(
-        customResults(Course, { path: 'bootcamp', select: 'name description' }),
+        customResults(Course, {
+            path: 'bootcamp', 
+            select: 'name description'
+        }),
         courseController.getCourses
         )
     .post(
