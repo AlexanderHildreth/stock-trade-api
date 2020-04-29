@@ -2,37 +2,37 @@
 const express           = require('express')
 // files
 const auth              = require('../middlewares/auth')
-const Course            = require('../models/Course')
-const courseController  = require('../controllers/courseController')
+const Review            = require('../models/Review')
+const reviewController  = require('../controllers/reviewController')
 const customResults     = require('../middlewares/customResults')
 // const vars
 const router            = express.Router({ mergeParams: true })
 
 router.route('/')
     .get(
-        customResults(Course, {
+        customResults(Review, { 
             path: 'bootcamp', 
             select: 'name description'
         }),
-        courseController.getCourses
-        )
+        reviewController.getReviews
+    )
     .post(
         auth.protect,
-        auth.authorise('publisher', 'admin'),
-        courseController.createCourse
+        auth.authorise('admin', 'user'),
+        reviewController.createReview
     )
 
 router.route('/:id')
-    .get(courseController.getCourseById)
+    .get(reviewController.getReviewById)
     .put(
         auth.protect,
-        auth.authorise('publisher', 'admin'),
-        courseController.updateCourse
+        auth.authorise('user', 'admin'),
+        reviewController.updateReview
     )
     .delete(
         auth.protect,
-        auth.authorise('publisher', 'admin'),
-        courseController.deleteCourse
+        auth.authorise('user', 'admin'),
+        reviewController.deleteReview
     )
 
 module.exports = router

@@ -11,9 +11,11 @@ const path              = require('path')
 dotenv.config({ path: './config/config.env' })
 const connectDB         = require('./config/db')
 const errorHandler      = require('./middlewares/error')
+const morganLogging     = require('./middlewares/morganLogging')
 const auths             = require('./routes/auths')
 const bootcamps         = require('./routes/bootcamps')
 const courses           = require('./routes/courses')
+const reviews           = require('./routes/reviews')
 const users             = require('./routes/users')
 // const vars
 const app               = express()
@@ -24,7 +26,7 @@ const accessLogStream   = fs.createWriteStream(path.join(__dirname, '/var/logs/a
 app.use(express.json())
 app.use(cookieParser())
 connectDB()
-process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : //app.use(morgan('combined', { stream: accessLogStream }))
+process.env.NODE_ENV === 'development' ? app.use(morganLogging) : //app.use(morgan('combined', { stream: accessLogStream }))
 app.use(fileUpload())
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -32,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/api/v1/auth', auths)
 app.use('/api/v1/bootcamps', bootcamps)
 app.use('/api/v1/courses', courses)
+app.use('/api/v1/reviews', reviews)
 app.use('/api/v1/users', users)
 
 // Routes middlewares

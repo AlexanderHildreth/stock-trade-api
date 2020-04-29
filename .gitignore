@@ -106,4 +106,3 @@ dist
 
 # Custom ignores
 public/uploads/*
-_data/reviews.json

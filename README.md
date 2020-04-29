@@ -59,7 +59,7 @@ bootcamps/ | GET | Public | JSON obj with all bootcamps
 bootcamps/ | POST | Private | Creates a bootcamp with given JSON obj
 bootcamps/radius/:zipcode/:distance | GET | Public | JSON obj with bootcamp(s) within given distance of zipcode
 bootcamps/:id | GET | Public | JSON obj with a bootcamp
-bootcamps/:id/courses | GET | Public | JSON obj with all courses in bootcamp
+<!-- bootcamps/:id/courses | GET | Public | JSON obj with all courses in bootcamp -->
 bootcamps/:id | PUT | Private | Updates bootcamp with given ID and JSON obj
 bootcamps/:id | DELETE | Private | Deletes bootcamp with given ID
 bootcamps/:id/photo | PUT | Private | Uploads a photo for specific bootcamp
@@ -67,10 +67,10 @@ bootcamps/:id/photo | PUT | Private | Uploads a photo for specific bootcamp
 ### Courses endpoints
 Route | Request | Access | Expected Response
 ------|---------|--------|------------------- 
-courses/ | GET | Public | JSON obj with all courses
+<!-- courses/ | GET | Public | JSON obj with all courses -->
+bootcamp/:bootcampId/courses | GET | Public | JSON obj with all courses in bootcamp
 bootcamp/:bootcampId/courses | POST | Private | Creates a course with given JSON obj
 courses/:id | GET | Public | JSON obj with a course
-courses/:bootcampId/courses | GET | Public | JSON obj with all courses in bootcamp
 courses/:id | PUT | Private | Updates course with given ID and JSON obj
 courses/:id | DELETE | Private | Deletes course with given ID
 
