@@ -62,7 +62,7 @@ app.use(`/api/${apiV}/trades`, trades)
 app.use(errorHandler)
 
 const server = app.listen(port, () => {
-    console.log(`[app] Server running in ${nodeEnv} mode on port ${port}`.yellow.underline.bold)
+    console.log(`[app] Server running in ${nodeEnv} mode on port ${port}`.magenta.underline.bold)
 })
 
 // Handle unhandles promis rejections
