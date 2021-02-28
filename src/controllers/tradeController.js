@@ -29,7 +29,6 @@ module.exports = {
     createTrade: req => {
         return new Promise((resolve, reject) => {
             const DB = databaseUtil.getDbConn(req);
-            length = req.body.length
 
             req.body.forEach(element => {
                 const statement = DB.prepare(
@@ -81,26 +80,27 @@ module.exports = {
         })
     },
     // @desc    Get all trades by user ID
-    // @route   GET /api/v1/trades//user/userIid
+    // @route   GET /api/v1/trades/user/:userId
     // @access  Public
     getTradesByUserId: (req, userId) => {
         return new Promise((resolve, reject) => {
             const DB = databaseUtil.getDbConn(req);
-
+            
             const statement = DB.prepare(
-            `SELECT * FROM trades WHERE user_id = ? ORDER BY id`
-            );
-
-            statement.all(userID, (err, res) => {
+                `SELECT * FROM trades WHERE user_id = ?`
+            ).bind([userId]);
+                
+            console.log(statement);
+            statement.all(userId, (err, res) => {
                 if (err) {
-                    return reject(new ErrorResponse('There was a error - ${err}', 400));
+                    return reject(new ErrorResponse(`There was a error - ${err}`, 400));
                 }
 
                 if (res.length === 0) {
                     return reject(new ErrorResponse('There was a error', 400));
                 }
                 
-                res.map(databaseUtil.format);
+                resolve(res.map(databaseUtil.format));
             });
         });
     }
