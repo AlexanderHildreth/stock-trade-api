@@ -1,5 +1,6 @@
 // Modules
 const bodyParser        = require('body-parser')
+const colours           = require('colors')
 const dotenv            = require('dotenv')
 const cookieParser      = require('cookie-parser');
 const cors              = require('cors')
@@ -16,6 +17,9 @@ dotenv.config({ path: './config/config.env' })
 const connectDB         = require('./config/db')
 const errorHandler      = require('./middlewares/error')
 const morganLogging     = require('./middlewares/morganLogging')
+const index             = require('./routes/index')
+const erase             = require('./routes/erase')
+const stock             = require('./routes/stock')
 const trades            = require('./routes/trades')
 // const vars
 const app               = express()
@@ -24,10 +28,11 @@ const limiter           = expressRateLimit({
     max: 100
 })
 const port              = process.env.PORT || 5000
-const apiV              = process.env.API_V || 5000
+const apiV              = process.env.API_V || 1
+const nodeEnv           = process.env.NODE_ENV
 
 // App middlewares
-process.env.NODE_ENV === 'development' ? app.use(morganLogging) : app.use(morgan('combined'))
+nodeEnv === 'development' ? app.use(morganLogging) : app.use(morgan('combined'))
 app.use(cors())
 app.use(cookieParser());
 app.use(helmet())
@@ -51,14 +56,14 @@ if(connectDB.createDbConn(app)) {
 // routes
 app.use(`/api/${apiV}/`, index);
 app.use(`/api/${apiV}/erase`, erase);
-app.use(`/api/${apiV}/stocks`, stocks);
+app.use(`/api/${apiV}/stocks`, stock);
 app.use(`/api/${apiV}/trades`, trades)
 
 // Routes middlewares
 app.use(errorHandler)
 
 const server = app.listen(port, () => {
-    console.log(`[app] Server running in ${process.env.NODE_ENV} mode on port ${port}`.yellow.underline.bold)
+    console.log(`[app] Server running in ${nodeEnv} mode on port ${port}`.yellow.underline.bold)
 })
 
 // Handle unhandles promis rejections

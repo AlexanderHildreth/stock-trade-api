@@ -3,12 +3,12 @@ const sqlite3 = require('sqlite3')
 const sqlite  = require('sqlite')
 
 async function createDbConn (app) {
-  app.set('db', sqlite.open({
-    filename: '/tmp/database.db',
+  const DbConn = await sqlite.open({
+    filename: ':memory:',
     driver: sqlite3.Database
-  }))
+  })
   
-  const DbConn = app.get('db')
+  app.set('db', DbConn)
   DbConn.run(
     `CREATE TABLE IF NOT EXISTS trades (
       id int primary key,
