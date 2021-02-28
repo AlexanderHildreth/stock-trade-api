@@ -11,7 +11,6 @@ const helmet            = require('helmet')
 const hpp               = require('hpp')
 const morgan            = require('morgan')
 const path              = require('path')
-const sqlite            = require('sqlite')
 const xssClean          = require('xss-clean')
 // loading files
 const connectDB         = require('./config/db')
