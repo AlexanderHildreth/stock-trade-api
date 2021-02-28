@@ -18,7 +18,7 @@ const errorHandler      = require('./middlewares/error')
 const morganLogging     = require('./middlewares/morganLogging')
 const index             = require('./routes/index')
 const erase             = require('./routes/erase')
-const stock             = require('./routes/stock')
+const stocks            = require('./routes/stocks')
 const trades            = require('./routes/trades')
 // const vars
 const app               = express()
@@ -55,7 +55,7 @@ if(connectDB.createDbConn(app)) {
 // routes
 app.use(`/api/${apiV}/`, index);
 app.use(`/api/${apiV}/erase`, erase);
-app.use(`/api/${apiV}/stocks`, stock);
+app.use(`/api/${apiV}/stocks`, stocks);
 app.use(`/api/${apiV}/trades`, trades)
 
 // Routes middlewares
