@@ -1,60 +1,63 @@
 // Modules
+const bodyParser        = require('body-parser')
 const dotenv            = require('dotenv')
-const cookieParser      = require('cookie-parser')
-const colours           = require('colors')
+const cookieParser      = require('cookie-parser');
 const cors              = require('cors')
 const express           = require('express')
 const expressRateLimit  = require('express-rate-limit')
-const fileUpload        = require('express-fileupload')
 const helmet            = require('helmet')
 const hpp               = require('hpp')
 const morgan            = require('morgan')
-const mongoSanitize     = require('express-mongo-sanitize')
 const path              = require('path')
+const sqlite            = require('sqlite')
 const xssClean          = require('xss-clean')
 // loading files
 dotenv.config({ path: './config/config.env' })
 const connectDB         = require('./config/db')
 const errorHandler      = require('./middlewares/error')
 const morganLogging     = require('./middlewares/morganLogging')
-const auths             = require('./routes/auths')
-const bootcamps         = require('./routes/bootcamps')
-const courses           = require('./routes/courses')
-const reviews           = require('./routes/reviews')
-const users             = require('./routes/users')
+const trades            = require('./routes/trades')
 // const vars
 const app               = express()
 const limiter           = expressRateLimit({
-    windowMs: 10 * 60 * 1000, // !0 minutes
+    windowMs: 10 * 60 * 1000, // 10 minutes
     max: 100
 })
-// const port              = process.env.PORT || 5000
+const port              = process.env.PORT || 5000
+const apiV              = process.env.API_V || 5000
 
 // App middlewares
 process.env.NODE_ENV === 'development' ? app.use(morganLogging) : app.use(morgan('combined'))
-connectDB()
-app.use(cookieParser())
 app.use(cors())
+app.use(cookieParser());
 app.use(helmet())
 app.use(hpp())
 app.use(limiter)
-app.use(mongoSanitize())
 app.use(xssClean())
 app.use(express.json())
-app.use(fileUpload())
-app.use(express.static(path.join(__dirname, 'public')))
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+if(connectDB.createDbConn(app)) {
+    console.log('[database] SQLite3 Connected'.cyan.underline.bold)
+} else {
+    server.close(() => process.exit(1))
+}
 
 // routes
-app.use('/api/v1/auth', auths)
-app.use('/api/v1/bootcamps', bootcamps)
-app.use('/api/v1/courses', courses)
-app.use('/api/v1/reviews', reviews)
-app.use('/api/v1/users', users)
+app.use(`/api/${apiV}/`, index);
+app.use(`/api/${apiV}/erase`, erase);
+app.use(`/api/${apiV}/stocks`, stocks);
+app.use(`/api/${apiV}/trades`, trades)
 
 // Routes middlewares
 app.use(errorHandler)
 
-/*const server = app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`[app] Server running in ${process.env.NODE_ENV} mode on port ${port}`.yellow.underline.bold)
 })
 
@@ -63,6 +66,6 @@ process.on('unhandledRejection', (err, promise) => {
     console.log(`ERROR: ${err.message}`.red)
 
     server.close(() => process.exit(1))
-})*/
+})
 
 module.exports = app
