@@ -16,7 +16,7 @@ exports.getAllTrades = asyncHandler(async(req, res, next) => {
             error = true
         };
 
-        resolve(res.map(databaseUtil.format));
+        res.map(databaseUtil.format);
     });
 
     if(error || !result) return next(new ErrorResponse(`Stock not found with symbol: ${req.params.symbol}`, 404));
@@ -26,39 +26,42 @@ exports.getAllTrades = asyncHandler(async(req, res, next) => {
 // @root    POST /api/v1/trades/
 // @route   POST /api/v1/trades/
 // @access  Public
-exports.createTrade = asyncHandler(async (req, res, next) => {
-    const DB = databaseUtil.getDbConn.getDB(req);
-    const error = false
-    
-    const statement = DB.prepare(
-    'INSERT INTO trades (id, type, user_id, user_name, symbol, shares, price, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-    [
-        req.body.id,
-        req.body.type,
-        req.body.user.id,
-        req.body.user.name,
-        req.body.symbol,
-        req.body.shares,
-        req.body.price,
-        req.body.timestamp
-    ]
-    );
+module.exports = {
+    createTrade: req => {
+        const DB = databaseUtil.getDbConn.getDB(req);
+        const error = false
+        
+        const statement = DB.prepare(
+        'INSERT INTO trades (id, type, user_id, user_name, symbol, shares, price, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+            req.body.id,
+            req.body.type,
+            req.body.user.id,
+            req.body.user.name,
+            req.body.symbol,
+            req.body.shares,
+            req.body.price,
+            req.body.timestamp
+        ]
+        );
 
-    result = DB.all('SELECT id FROM trades WHERE id = ? LIMIT 1', (err, res) => {
-        if (err || res.length > 0) {
-            return next(new ErrorResponse(`There was a error - ${err.message}`, 400));
-        };
-        statement.run(err => {
-            if (err) next(new ErrorResponse(`There was a error - ${err.message}`, 400));
+        result = DB.all('SELECT id FROM trades WHERE id = ? LIMIT 1', (err, res) => {
+            if (err || res.length > 0) {
+                return next(new ErrorResponse(`There was a error - ${err.message}`, 400));
+            };
+            statement.run(err => {
+                if (err) next(new ErrorResponse(`There was a error - ${err.message}`, 400));
+            });
         });
-    });
+        
+        res.status(201)
+            .json({
+                success: true,
+                data: result
+            })
     
-    res.status(201)
-        .json({
-            success: true,
-            data: result
-        })
-})
+    }
+}
 
 // @desc    Delete all trades
 // @route   DELETE /api/v1/trades/:id

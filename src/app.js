@@ -1,7 +1,8 @@
 // Modules
+const dotenv            = require('dotenv')
+dotenv.config({ path: __dirname + '/config/config.env' })
 const bodyParser        = require('body-parser')
 const colours           = require('colors')
-const dotenv            = require('dotenv')
 const cookieParser      = require('cookie-parser');
 const cors              = require('cors')
 const express           = require('express')
@@ -13,7 +14,6 @@ const path              = require('path')
 const sqlite            = require('sqlite')
 const xssClean          = require('xss-clean')
 // loading files
-dotenv.config({ path: './config/config.env' })
 const connectDB         = require('./config/db')
 const errorHandler      = require('./middlewares/error')
 const morganLogging     = require('./middlewares/morganLogging')
@@ -28,7 +28,7 @@ const limiter           = expressRateLimit({
     max: 100
 })
 const port              = process.env.PORT || 5000
-const apiV              = process.env.API_V || 1
+const apiV              = process.env.API_V || 'v1'
 const nodeEnv           = process.env.NODE_ENV
 
 // App middlewares

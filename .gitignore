@@ -71,7 +71,7 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
-config/config.env
+src/config/config.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -105,5 +105,3 @@ dist
 .tern-port
 
 # Custom ignores
-public/uploads/*
-Procfile
