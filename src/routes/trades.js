@@ -13,7 +13,7 @@ router.post('/', (req, res) => {
   
   router.get('/', (req, res) => {
     tradeController.getAllTrades(req)
-      .then(e => res.json(e))
+      .then(output => res.json(output))
       .catch(() => res.sendStatus(400));
   });
   
