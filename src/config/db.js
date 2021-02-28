@@ -1,12 +1,10 @@
 // Modules
 const sqlite3 = require('sqlite3')
-const sqlite  = require('sqlite')
 
 async function createDbConn (app) {
-  app.set('db', await sqlite.open({
-    filename: ':memory:',
-    driver: sqlite3.Database
-  }))
+  app.set('db', new sqlite3.Database(
+    ':memory:'
+  ))
   
   const DbConn = app.get('db')
 
