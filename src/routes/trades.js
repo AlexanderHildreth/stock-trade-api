@@ -17,9 +17,9 @@ router.post('/', (req, res) => {
       .catch(() => res.sendStatus(400));
   });
   
-  router.get('/users/:userID', (req, res) => {
-    tradeController.user(req, req.params.userID)
-      .then(e => res.json(e))
+  router.get('/users/:userId', (req, res) => {
+    tradeController.getTradesByUserId(req, req.params.userId)
+      .then(output => res.json(output))
       .catch(err => {
         if (err === 404) return res.sendStatus(404);
         res.sendStatus(400);
