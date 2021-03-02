@@ -7,11 +7,9 @@ const errorHandleer = (err, req, res, next) => {
 
     res.locals.message = err.message;
     res.locals.error   = req.app.get('env') === 'development' ? err : {};
-    res.status(error.statusCode || 500).json({
-      success: false,
-      error: error.message || "Server Error",
-    });
-    res.render('error');
+    res.status(error.statusCode || 500)
+    
+    console.log(error)
 }
 
 module.exports = errorHandleer;

@@ -11,7 +11,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const { type, start, end } = req.query;
       const DB = databaseUtil.createDbConn(req);
-      
+      console.log(symbol)
       const statement = DB.prepare(
         `SELECT * FROM trades WHERE symbol = ? AND type = ? AND timestamp BETWEEN date(?) AND date(?, '+1 day') ORDER BY id`
       ).bind([symbol, type, start, end])

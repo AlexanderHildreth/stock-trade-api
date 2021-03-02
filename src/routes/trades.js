@@ -1,4 +1,5 @@
 // Modules
+const colours         = require('colors')
 const express         = require('express')
 // files
 const tradeController = require('../controllers/tradeController')
@@ -17,13 +18,12 @@ router.post('/', (req, res) => {
       .catch(() => res.sendStatus(400));
   });
   
-  router
-    .route('/users/:userId')
-    .get((req, res) => {
-      tradeController.getTradesByUserId(req, req.params.userId)
+  router.get('/users/:userId', (req, res) => {
+    tradeController.getTradesByUserId(req, req.params.userId)
       .then(output => res.json(output))
       .catch(err => {
         if (err === 404) return res.sendStatus(404);
+        // console.error(`${err}`.red)
         res.sendStatus(400);
       });
   });
