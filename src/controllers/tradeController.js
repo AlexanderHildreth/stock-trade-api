@@ -86,19 +86,23 @@ module.exports = {
         return new Promise((resolve, reject) => {
             const DB = databaseUtil.getDbConn(req);
             
-            const statement = DB.prepare(
-                `SELECT * FROM trades WHERE user_id = ?`
-            ).bind([userId]);
+            const statement = DB.prepare('SELECT * FROM trades WHERE user_id = ? ORDER BY id');
                 
-            console.log(statement);
-            statement.all(userId, (err, res) => {
+            result = DB.all(userId, (err, res) => {
                 if (err) {
+                    console.log(err)
                     return reject(new ErrorResponse(`There was a error - ${err}`, 400));
                 }
-
+                
                 if (res.length === 0) {
                     return reject(new ErrorResponse('There was a error', 400));
                 }
+                
+                statement.run(err => {
+                    if (err) {
+                        return reject(new ErrorResponse(`There was a error - ${err}`, 400));
+                    }
+                })
                 
                 resolve(res.map(databaseUtil.format));
             });

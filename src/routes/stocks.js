@@ -3,7 +3,7 @@ const express         = require('express')
 // files
 const stockController = require('../controllers/stockController')
 // const vars
-const router          = express.Router({ mergeParams: true })
+const router          = express.Router()
 
 // Stock Routes
 router.get('/:symbol/trades', (req, res) => {
@@ -12,8 +12,8 @@ router.get('/:symbol/trades', (req, res) => {
         .catch(() => res.sendStatus(404));
 });
 
-router.get('/:symbol/price', (req, res) => {
-    stockController.filterStockByPrice(req, req.params.symbol)
+router.get('/:symbol/stats', (req, res) => {
+    stockController.getStockStats(req, req.params.symbol)
         .then(output => res.json(output))
         .catch(() => res.sendStatus(404));
 });

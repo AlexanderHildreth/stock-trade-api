@@ -1,5 +1,5 @@
 // Modules
-const sqlite3 = require('sqlite3')
+const sqlite3 = require('sqlite3').verbose()
 
 async function createDbConn (app) {
   app.set('db', new sqlite3.Database(

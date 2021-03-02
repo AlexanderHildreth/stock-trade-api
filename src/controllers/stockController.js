@@ -18,6 +18,7 @@ module.exports = {
       
       DB.get('SELECT id FROM trades WHERE symbol = ? LIMIT 1', symbol, (err, res) => {
           if (err || !res) {
+            console.log(err)
             return reject(new ErrorResponse(`Stock not found with symbol: ${symbol}`, 404));
           }
 
@@ -34,7 +35,7 @@ module.exports = {
   // @root    GET /api/v1/trades
   // @route   GET /api/v1/trades/:symbol/price
   // @access  Public
-  filterStockByPrice: (req, symbol) => {
+  getStockStats: (req, symbol) => {
     return new Promise((resolve, reject) => {
       const { type, start, end } = req.query;
       const DB = databaseUtil.createDbConn(req);
@@ -45,6 +46,7 @@ module.exports = {
       console.log(statement)
       DB.get('SELECT id FROM trades WHERE symbol=? LIMIT 1', symbol, (err, res) => {
           if (err) {
+            console.log(err)
             return reject(new ErrorResponse(`Stock not found with symbol: ${symbol}`, 404));
           }
           
