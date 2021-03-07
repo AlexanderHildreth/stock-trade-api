@@ -3,7 +3,7 @@ const chalk     = require('chalk');
 
 const morganLogging = morgan(function (tokens, req, res) {
     return chalk.blue.underline.bold([
-        '[request]',
+        '[REQUEST]',
         tokens.method(req, res),
         tokens.status(req, res),
         tokens.url(req, res),

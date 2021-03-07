@@ -1,32 +1,16 @@
 // Modules
-const sqlite3 = require('sqlite3').verbose()
+const colours  = require('colors')
+const mongoose = require('mongoose');
 
-async function createDbConn (app) {
-  app.set('db', new sqlite3.Database(
-    ':memory:'
-  ))
+const connectDB = async () => {
+  const conn = await mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+  });
   
-  const DbConn = app.get('db')
-
-  DbConn.run(
-    `CREATE TABLE IF NOT EXISTS trades (
-      id int primary key,
-      type text,
-      user_id int,
-      user_name text,
-      symbol text,
-      shares int,
-      price real,
-      timestamp datetime
-    );`,
-  () => {
-    DbConn.run(`CREATE INDEX IF NOT EXISTS unique_trade ON trades (id)`);
-    DbConn.run(`CREATE INDEX IF NOT EXISTS symbol_index ON trades (symbol)`);
-    DbConn.run(`CREATE INDEX IF NOT EXISTS price_index ON trades (price)`);
-    DbConn.run(`CREATE INDEX IF NOT EXISTS time_index ON trades (timestamp)`);
-    DbConn.run(`CREATE INDEX IF NOT EXISTS user_index ON trades (user_id)`);
-    DbConn.run(`CREATE INDEX IF NOT EXISTS type_index ON trades (type)`);
-  })
+  console.log(`[DATABASE] MongoDB connected on host: ${conn.connection.host}`.cyan.underline.bold);
 }
 
-module.exports.createDbConn = createDbConn
+module.exports = connectDB

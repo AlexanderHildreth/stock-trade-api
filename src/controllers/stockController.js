@@ -7,19 +7,19 @@ module.exports = {
   // @root    GET /api/v1/trades
   // @route   GET /api/v1/trades/:symbol/trades
   // @access  Public
-  filterStockBySymbol: (req, symbol) => {
+  filterStockBySymbol: req => {
     return new Promise((resolve, reject) => {
       const { type, start, end } = req.query;
-      const DB = databaseUtil.createDbConn(req);
-      console.log(symbol)
+      const DB = databaseUtil.getDbConn(req);
+
       const statement = DB.prepare(
         `SELECT * FROM trades WHERE symbol = ? AND type = ? AND timestamp BETWEEN date(?) AND date(?, '+1 day') ORDER BY id`
-      ).bind([symbol, type, start, end])
+      ).bind([req.params.symbol, type, start, end])
       
-      DB.get('SELECT id FROM trades WHERE symbol = ? LIMIT 1', symbol, (err, res) => {
+      DB.get('SELECT id FROM trades WHERE symbol = ?', req.params.symbol, (err, res) => {
           if (err || !res) {
             console.log(err)
-            return reject(new ErrorResponse(`Stock not found with symbol: ${symbol}`, 404));
+            return reject(new ErrorResponse(`Stock not found with symbol: ${req.params.symbol}`, 404));
           }
 
           statement.all((err, res) => {
@@ -35,15 +35,15 @@ module.exports = {
   // @root    GET /api/v1/trades
   // @route   GET /api/v1/trades/:symbol/price
   // @access  Public
-  getStockStats: (req, symbol) => {
+  getStockStats: req => {
     return new Promise((resolve, reject) => {
       const { type, start, end } = req.query;
-      const DB = databaseUtil.createDbConn(req);
+      const DB = databaseUtil.getDbConn(req);
 
       const statement = DB.prepare(
-        `SELECT symbol, MIN(price), MAX(price), COUNT(id) FROM trades WHERE symbol=? AND timestamp BETWEEN date(?) AND date(?, '+1 day')`
+        `SELECT symbol, MIN(price), MAX(price), COUNT(id) FROM trades WHERE symbol = ? AND timestamp BETWEEN date(?) AND date(?, '+1 day')`
       ).bind([symbol, type, start, end]);
-      console.log(statement)
+
       DB.get('SELECT id FROM trades WHERE symbol=? LIMIT 1', symbol, (err, res) => {
           if (err) {
             console.log(err)

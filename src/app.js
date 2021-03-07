@@ -10,6 +10,7 @@ const expressRateLimit  = require('express-rate-limit')
 const helmet            = require('helmet')
 const hpp               = require('hpp')
 const morgan            = require('morgan')
+const mongoose          = require('mongoose')
 const path              = require('path')
 const xssClean          = require('xss-clean')
 // loading files
@@ -46,12 +47,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-if(connectDB.createDbConn(app)) {
-    console.log('[database] SQLite3 Connected'.cyan.underline.bold)
-} else {
-    server.close(() => process.exit(1))
-}
-
 // routes
 app.use(`/api/${apiV}/`, index);
 app.use(`/api/${apiV}/erase`, erase);
@@ -61,8 +56,11 @@ app.use(`/api/${apiV}/trades`, trades)
 // Routes middlewares
 app.use(errorHandler)
 
+// DB Connection
+connectDB()
+
 const server = app.listen(port, () => {
-    console.log(`[app] Server running in ${nodeEnv} mode on port ${port}`.magenta.underline.bold)
+    console.log(`[APP] Server running in ${nodeEnv} mode on port ${port}`.magenta.underline.bold)
 })
 
 // Handle unhandles promis rejections

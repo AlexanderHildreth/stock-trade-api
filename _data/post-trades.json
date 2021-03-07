@@ -2,10 +2,7 @@
   {
     "id": 1,
     "type": "buy",
-    "user": {
-      "id": 1,
-      "name": "David"
-    },
+    "user": 1,
     "symbol": "AC",
     "shares": 28,
     "price": 162.17,
@@ -14,10 +11,7 @@
   {
     "id": 2,
     "type": "buy",
-    "user": {
-      "id": 3,
-      "name": "Brandon"
-    },
+    "user": 3,
     "symbol": "ACC",
     "shares": 25,
     "price": 146.09,
@@ -26,10 +20,7 @@
   {
     "id": 3,
     "type": "buy",
-    "user": {
-      "id": 2,
-      "name": "Omar"
-    },
+    "user": 2,
     "symbol": "AC",
     "shares": 13,
     "price": 146.09,
@@ -38,10 +29,7 @@
   {
     "id": 4,
     "type": "buy",
-    "user": {
-      "id": 1,
-      "name": "David"
-    },
+    "user": 1,
     "symbol": "AC",
     "shares": 12,
     "price": 137.39,
@@ -50,10 +38,7 @@
   {
     "id": 5,
     "type": "buy",
-    "user": {
-      "id": 3,
-      "name": "Brandon"
-    },
+    "user": 3,
     "symbol": "AC",
     "shares": 15,
     "price": 161.35,
@@ -62,10 +47,7 @@
   {
     "id": 6,
     "type": "sell",
-    "user": {
-      "id": 3,
-      "name": "Brandon"
-    },
+    "user": 3,
     "symbol": "AC",
     "shares": 10,
     "price": 162.37,
@@ -74,10 +56,7 @@
   {
     "id": 7,
     "type": "buy",
-    "user": {
-      "id": 3,
-      "name": "Brandon"
-    },
+    "user": 3,
     "symbol": "ACC",
     "shares": 17,
     "price": 146.08,
@@ -86,10 +65,7 @@
   {
     "id": 8,
     "type": "buy",
-    "user": {
-      "id": 3,
-      "name": "Brandon"
-    },
+    "user": 3,
     "symbol": "ACC",
     "shares": 15,
     "price": 146.11,
@@ -98,10 +74,7 @@
   {
     "id": 9,
     "type": "buy",
-    "user": {
-      "id": 3,
-      "name": "Brandon"
-    },
+    "user": 3,
     "symbol": "ACC",
     "shares": 25,
     "price": 146.09,
@@ -110,10 +83,7 @@
   {
     "id": 10,
     "type": "buy",
-    "user": {
-      "id": 1,
-      "name": "David"
-    },
+    "user": 1,
     "symbol": "ABR",
     "shares": 10,
     "price": 136.27,
