@@ -1,6 +1,5 @@
 // Files
 const ErrorResponse = require('../utils/errorResponse')
-const databaseUtil  = require('../utils/database');
 
 module.exports = {
   // @desc    Get all trades by stock symbol

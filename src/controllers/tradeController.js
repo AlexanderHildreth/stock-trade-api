@@ -1,7 +1,6 @@
 // Files
 const asyncHandler  = require('../middlewares/async')
 const ErrorResponse = require('../utils/errorResponse')
-const databaseUtil  = require('../utils/database');
 const Trade         = require('../models/Trade')
 
 
