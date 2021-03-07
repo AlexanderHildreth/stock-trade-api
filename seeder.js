@@ -5,8 +5,8 @@ const dotenv    = require('dotenv')
 
 // files
 dotenv.config({ path: __dirname + '/config/config.env' })
-const Trades = require('./src/models/Trades')
-const Users  = require('./src/models/Users')
+const Trades = require('./src/models/Trade')
+const Users  = require('./src/models/User')
 
 // DB connection
 mongoose.connect(process.env.MONGODB_URI, {
