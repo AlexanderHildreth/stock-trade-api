@@ -2,7 +2,7 @@
   {
     "id": 1,
     "type": "buy",
-    "user": 1,
+    "user": "6047ae43cbc3c40eb8160a7b",
     "symbol": "AC",
     "shares": 28,
     "price": 162.17,
@@ -11,7 +11,7 @@
   {
     "id": 2,
     "type": "buy",
-    "user": 3,
+    "user": "6047ae43cbc3c40eb8160a7d",
     "symbol": "ACC",
     "shares": 25,
     "price": 146.09,
@@ -20,7 +20,7 @@
   {
     "id": 3,
     "type": "buy",
-    "user": 2,
+    "user": "6047ae43cbc3c40eb8160a7c",
     "symbol": "AC",
     "shares": 13,
     "price": 146.09,
@@ -29,7 +29,7 @@
   {
     "id": 4,
     "type": "buy",
-    "user": 1,
+    "user": "6047ae43cbc3c40eb8160a7b",
     "symbol": "AC",
     "shares": 12,
     "price": 137.39,
@@ -38,7 +38,7 @@
   {
     "id": 5,
     "type": "buy",
-    "user": 3,
+    "user": "6047ae43cbc3c40eb8160a7d",
     "symbol": "AC",
     "shares": 15,
     "price": 161.35,
@@ -47,7 +47,7 @@
   {
     "id": 6,
     "type": "sell",
-    "user": 3,
+    "user": "6047ae43cbc3c40eb8160a7d",
     "symbol": "AC",
     "shares": 10,
     "price": 162.37,
@@ -56,7 +56,7 @@
   {
     "id": 7,
     "type": "buy",
-    "user": 3,
+    "user": "6047ae43cbc3c40eb8160a7d",
     "symbol": "ACC",
     "shares": 17,
     "price": 146.08,
@@ -65,7 +65,7 @@
   {
     "id": 8,
     "type": "buy",
-    "user": 3,
+    "user": "6047ae43cbc3c40eb8160a7d",
     "symbol": "ACC",
     "shares": 15,
     "price": 146.11,
@@ -74,7 +74,7 @@
   {
     "id": 9,
     "type": "buy",
-    "user": 3,
+    "user": "6047ae43cbc3c40eb8160a7d",
     "symbol": "ACC",
     "shares": 25,
     "price": 146.09,
@@ -83,7 +83,7 @@
   {
     "id": 10,
     "type": "buy",
-    "user": 1,
+    "user": "6047ae43cbc3c40eb8160a7b",
     "symbol": "ABR",
     "shares": 10,
     "price": 136.27,

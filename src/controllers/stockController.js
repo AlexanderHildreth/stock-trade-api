@@ -1,40 +1,51 @@
 // Files
+const asyncHandler  = require('../middlewares/async')
 const ErrorResponse = require('../utils/errorResponse')
+const Trade         = require('../models/Trade')
 
-module.exports = {
-  // @desc    Get all trades by stock symbol
-  // @root    GET /api/v1/trades
-  // @route   GET /api/v1/trades/:symbol/trades
-  // @access  Public
-  filterStockBySymbol: req => {
-    return new Promise((resolve, reject) => {
-      const { type, start, end } = req.query;
-      const DB = databaseUtil.getDbConn(req);
+// @desc    Get all highest and lowest in date range by stock symbol
+// @root    GET /api/v1/stocks
+// @route   GET /api/v1/stocks/:symbol/price
+// @access  Public
+exports.getStockFluxPriceByDate = asyncHandler(async (req, res, next) => {
+  start = new Date(req.query.start);
+  end   = new Date(req.query.end);
+ 
+  const stockPriceMin = await Trade.find({
+    symbol: req.params.symbol,
+    timestamp: {
+      $gte: start,
+      $lte: end
+    }
+  }).sort({price: +1}).limit(1)
 
-      const statement = DB.prepare(
-        `SELECT * FROM trades WHERE symbol = ? AND type = ? AND timestamp BETWEEN date(?) AND date(?, '+1 day') ORDER BY id`
-      ).bind([req.params.symbol, type, start, end])
-      
-      DB.get('SELECT id FROM trades WHERE symbol = ?', req.params.symbol, (err, res) => {
-          if (err || !res) {
-            console.log(err)
-            return reject(new ErrorResponse(`Stock not found with symbol: ${req.params.symbol}`, 404));
-          }
+  const stockPriceMax = await Trade.find({
+    symbol: req.params.symbol,
+    timestamp: {
+      $gte: start,
+      $lte: end
+    }
+  }).sort({price: -1}).limit(1)
 
-          statement.all((err, res) => {
-            if (err) return reject(err);
-            
-            resolve(res.map(databaseUtil.format));
-          });
-        }
-      );
-    });
-  },
+  const stockPriceFlux = {
+    symbol: req.params.symbol,
+    minPrice: stockPriceMin,
+    maxPrice: stockPriceMax
+  }
+  res.status(201)
+    .json({
+      success: true,
+      results: stockPriceFlux.length,
+      data: {
+        stockPriceFlux
+      }
+    })
+})
   // @desc    Get high/low prices for stock by symbol
   // @root    GET /api/v1/trades
   // @route   GET /api/v1/trades/:symbol/price
   // @access  Public
-  getStockStats: req => {
+  /*getStockStats: req => {
     return new Promise((resolve, reject) => {
       const { type, start, end } = req.query;
       const DB = databaseUtil.getDbConn(req);
@@ -70,4 +81,4 @@ module.exports = {
       );
     });
   }
-};
+};*/

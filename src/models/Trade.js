@@ -2,25 +2,23 @@
 const mongoose = require('mongoose');
 
 const TradeSchema = mongoose.Schema({
-  type: {
-    type: String,
-  },
+  id: Number,
+  type: String,
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User'
   },
-  symbol: {
-    type: String
-  },
-  shares: {
-    type: String
-  },
+  symbol: String,
+  shares: String,
   price: {
+    type: Number, 
+    set: function (v) { 
+      return Math.round(v);
+    }
   },
   timestamp: {
     type: Date
   }
 });
 
-const Trade = mongoose.model('Trade', TradeSchema);
-module.exports = Trade;
+module.exports = mongoose.model('Trade', TradeSchema);;
